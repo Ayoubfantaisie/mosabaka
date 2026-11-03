@@ -1,0 +1,321 @@
+DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مسابقة المسيرة الخضراء - جمعية الرسالة</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body {
+      background: linear-gradient(135deg, #1b5e20, #b71c1c);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1vw;
+      overflow-x: hidden;
+    }
+    /* خلفية تعبيرية للمسيرة */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('https://images.unsplash.com/photo-1596464716127-f2a82984de30?q=80&w=1200') center/cover no-repeat;
+      opacity: 0.15;
+      z-index: -1;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.8);
+      border: 5px solid #ffd700;
+      border-radius: 24px;
+      width: 95vw;
+      max-width: 1280px;
+      padding: 30px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+      text-align: center;
+      position: relative;
+    }
+    /* الهوية البصرية واللوغو */
+    .top-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px double #ffd700;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    /* رسم لوغو الجمعية التعبيري بالـ CSS */
+    .association-logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #2196f3, #0d47a1);
+      border: 3px solid #ffb300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+    .association-logo::after {
+      content: "جمعية الرسالة";
+      position: absolute;
+      bottom: 4px;
+      font-size: 8px;
+      color: #fff;
+      background: #ffb300;
+      padding: 1px 6px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+    /* الأشرعة والأشكال الطائرة داخل اللوغو */
+    .logo-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 20 L40 45 L50 40 L60 45 Z" fill="white"/><path d="M30 40 L25 60 L35 55 L38 45 Z" fill="white"/><path d="M70 40 L62 45 L65 55 L75 60 Z" fill="white"/><path d="M50 75 C30 75 20 60 20 60 C20 60 35 70 50 70 C65 70 80 60 80 60 C80 60 70 75 50 75 Z" fill="%23ffb300"/></svg>') center/85% no-repeat;
+    }
+    .banner-text h1 {
+      font-size: 2.2rem;
+      color: #ffd700;
+      text-shadow: 2px 2px 4px #000;
+    }
+    .banner-text p {
+      font-size: 1.3rem;
+      color: #e0e0e0;
+      margin-top: 5px;
+    }
+    .team-badge {
+      font-size: 2rem;
+      background: linear-gradient(45deg, #ff1744, #b71c1c);
+      color: #fff;
+      padding: 10px 30px;
+      border-radius: 50px;
+      font-weight: bold;
+      border: 3px solid #ffd700;
+      text-shadow: 1px 1px 2px #000;
+      box-shadow: 0 4px 15px rgba(255, 23, 68, 0.4);
+    }
+    .team-badge.active-team {
+      background: linear-gradient(45deg, #00e676, #1b5e20);
+      box-shadow: 0 4px 15px rgba(0, 230, 118, 0.4);
+    }
+    /* السؤال واختياراته */
+    .question-box {
+      font-size: 2.5rem;
+      font-weight: bold;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 20px 0;
+      color: #fff;
+      line-height: 1.5;
+      text-shadow: 2px 2px 5px #000;
+    }
+    .question-meta {
+      font-size: 1.3rem;
+      color: #ffd700;
+      margin-bottom: 10px;
+      background: rgba(255,215,0,0.1);
+      padding: 5px 20px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,215,0,0.3);
+    }
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    @media (min-width: 768px) {
+      .options-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .option-btn {
+      background: linear-gradient(180deg, #37474f, #212121);
+      border: 3px solid #78909c;
+      color: white;
+      font-size: 1.8rem;
+      font-weight: bold;
+      padding: 22px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+    .option-btn.correct {
+      background: linear-gradient(180deg, #2e7d32, #1b5e20) !important;
+      border-color: #00e676 !important;
+      transform: scale(1.05);
+      box-shadow: 0 0 25px #00e676;
+    }
+    /* أزرار التحكم */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      border-top: 2px dashed #ffd700;
+      padding-top: 20px;
+    }
+    .action-btn {
+      background: linear-gradient(180deg, #ffd700, #ff8f00);
+      color: #000;
+      border: 2px solid #fff;
+      font-size: 1.6rem;
+      font-weight: bold;
+      padding: 15px 35px;
+      border-radius: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      flex: 1;
+      max-width: 250px;
+    }
+    .action-btn:hover { background: #ffea00; }
+    .action-btn.reveal {
+      background: linear-gradient(180deg, #00e676, #00c853);
+      color: #fff;
+    }
+    .action-btn.reveal:hover { background: #69f0ae; }
+    .progress-dots {
+      font-size: 1.3rem;
+      color: #ffd700;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- الجزء العلوي: اللوغو والهوية البصرية للمسابقة -->
+  <div class="top-banner">
+    <div class="logo-container">
+      <div class="association-logo"><div class="logo-inner"></div></div>
+      <div class="banner-text">
+        <h1>مسابقة المسيرة الخضراء الكبرى للأطفال</h1>
+        <p>جمعية الرسالة للتربية والتخييم - فرع سلا تابريكت</p>
+      </div>
+    </div>
+    <div class="team-badge id-team" id="team-display">الفريق الأول</div>
+  </div>
+
+  <!-- صندوق الأسئلة -->
+  <div class="question-box">
+    <div class="question-meta" id="round-display">الجولة الأولى - السؤال 1</div>
+    <div id="question-text">تحميل السؤال...</div>
+  </div>
+
+  <!-- خيارات الأجوبة -->
+  <div class="options-grid" id="options-container"></div>
+
+  <!-- أزرار الانتقال والتحكم فالتلفاز -->
+  <div class="controls">
+    <button class="action-btn" onclick="prevQuestion()">السابق ◀</button>
+    <button class="action-btn reveal" onclick="revealAnswer()">🌟 إظهار الجواب</button>
+    <button class="action-btn" onclick="nextQuestion()">التالي ▶</button>
+  </div>
+  
+  <div class="progress-dots" style="margin-top: 15px;" id="progress-text">سؤال 1 من أصل 16</div>
+</div>
+
+<script>
+// مصفوفة الأسئلة مقسمة بالتناوب على الفرق الأربعة (4 أسئلة لكل فريق، المجموع 16)
+const quizData = [
+  // الجولة 1
+  { t: "الفريق الأول", r: "الجولة الأولى - السؤال 1", q: "في أي سنة انطلقت المسيرة الخضراء المظفرة؟", opts: ["1970", "1975", "1980"], a: 1 },
+  { t: "الفريق الثاني", r: "الجولة الأولى - السؤال 2", q: "من هو الملك الذي أعلن عن تنظيم المسيرة الخضراء؟", opts: ["الملك محمد الخامس", "الملك الحسن الثاني", "الملك محمد السادس"], a: 1 },
+  { t: "الفريق الثالث", r: "الجولة الأولى - السؤال 3", q: "ما هو الشهر الذي نحتفل فيه بذكرى المسيرة الخضراء كل عام؟", opts: ["نونبر (شهر 11)", "غشت (شهر 8)", "يناير (شهر 1)"], a: 0 },
+  { t: "الفريق الرابع", r: "الجولة الأولى - السؤال 4", q: "ماذا كان يحمل المتطوعون في أيديهم خلال المسيرة الخضراء؟", opts: ["الأسلحة والعصي", "المصحف الشريف والعلم الوطني", "الحقائب والكتب المدرسية"], a: 1 },
+
+  // الجولة 2
+  { t: "الفريق الأول", r: "الجولة الثانية - السؤال 5", q: "ما هو لون النجمة في وسط العلم المغربي؟", opts: ["أحمر", "أصفر", "أخضر"], a: 2 },
+  { t: "الفريق الثاني", r: "الجولة الثانية - السؤال 6", q: "كم كان عدد المتطوعين والمتطوعات في المسيرة الخضراء؟", opts: ["35 ألف", "350 ألف", "مليون"], a: 1 },
+  { t: "الفريق الثالث", r: "الجولة الثانية - السؤال 7", q: "في أي يوم من شهر نونبر انطلقت المسيرة الخضراء رسمياً؟", opts: ["6 نونبر", "18 نونبر", "30 يوليوز"], a: 0 },
+  { t: "الفريق الرابع", r: "الجولة الثانية - السؤال 8", q: "ما هي الدولة الاستعمارية التي كانت تحتل الصحراء المغربية قبل المسيرة؟", opts: ["فرنسا", "إسبانيا", "إنجلترا"], a: 1 },
+
+  // الجولة 3
+  { t: "الفريق الأول", r: "الجولة الثالثة - السؤال 9", q: "لماذا سُميت المسيرة بـ 'الخضراء'؟", opts: ["لأنها كانت مسيرة سلمية وبدون سلاح", "لأن الصحراء مغطاة بالعشب الأخضر", "لأن الجميع لبس قبعات خضراء"], a: 0 },
+  { t: "الفريق الثاني", r: "الجولة الثالثة - السؤال 10", q: "ما هي أشهر أغنية وطنية ارتبطت بحدث المسيرة الخضراء؟", opts: ["صوت الحسن ينادي", "نداء المحبة", "يا بلادي يا زين البلدان"], a: 0 },
+  { t: "الفريق الثالث", r: "الجولة الثالثة - السؤال 11", q: "كم كان عدد النساء المشاركات بين المتطوعين؟", opts: ["حوالي 10 آلاف", "حوالي 35 ألف امرأة", "لم تشارك أي امرأة"], a: 1 },
+  { t: "الفريق الرابع", r: "الجولة الثالثة - السؤال 12", q: "ما هي المدينة المغربية التي أعطى منها الحسن الثاني إشارة الانطلاق؟", opts: ["مدينة أكادير", "مدينة الرباط", "مدينة مراكش"], a: 0 },
+
+  // الجولة 4
+  { t: "الفريق الأول", r: "الجولة الرابعة - السؤال 13", q: "وسيلة النقل الرئيسية لنقل المتطوعين والمؤونة كانت:", opts: ["الشاحنات والقطارات", "الطائرات الحربية", "البواخر السياحية"], a: 0 },
+  { t: "الفريق الثاني", r: "الجولة الرابعة - السؤال 14", q: "ما هي عاصمة الصحراء المغربية؟", opts: ["طنجة", "العيون", "فاس"], a: 1 },
+  { t: "الفريق الثالث", r: "الجولة الرابعة - السؤال 15", q: "عندما أمر الملك المشاركين بالرجوع بعد تحقيق الهدف، ماذا قال لهم؟", opts: ["'ارجعوا إلى قواعدكم سالمين'", "'ابقوا هناك للأبد'", "'انتظروا مسيرة جديدة'"], a: 0 },
+  { t: "الفريق الرابع", r: "الجولة الرابعة - السؤال 16", q: "ما هو شعار المملكة المغربية الراسخ في قلوبنا؟", opts: ["الحرية، المساواة، الأخوة", "الله، الوطن، الملك", "العمل، الاجتهاد، النجاح"], a: 1 }
+];
+
+let currentIndex = 0;
+
+function renderQuestion() {
+  const item = quizData[currentIndex];
+  
+  // تحديث الفريق والتقدم
+  const teamBtn = document.getElementById("team-display");
+  teamBtn.innerText = item.t;
+  
+  // تلوين اسم الفريق بشكل تفاعلي لجذب انتباه الجمهور
+  if(item.t === "الفريق الأول") teamBtn.style.background = "linear-gradient(45deg, #00e676, #1b5e20)";
+  else if(item.t === "الفريق الثاني") teamBtn.style.background = "linear-gradient(45deg, #2196f3, #0d47a1)";
+  else if(item.t === "الفريق الثالث") teamBtn.style.background = "linear-gradient(45deg, #ff9800, #e65100)";
+  else teamBtn.style.background = "linear-gradient(45deg, #e91e63, #880e4f)";
+
+  document.getElementById("round-display").innerText = item.r;
+  document.getElementById("question-text").innerText = item.q;
+  document.getElementById("progress-text").innerText = `السؤال ${currentIndex + 1} من أصل ${quizData.length}`;
+
+  const container = document.getElementById("options-container");
+  container.innerHTML = "";
+
+  const labels = ["أ", "ب", "ج"];
+  item.opts.forEach((opt, idx) => {
+    const btn = document.createElement("button");
+    btn.className = "option-btn";
+    btn.id = `opt-${idx}`;
+    btn.innerText = `${labels[idx]}) ${opt}`;
+    container.appendChild(btn);
+  });
+}
+
+function revealAnswer() {
+  const correctIdx = quizData[currentIndex].a;
+  const correctBtn = document.getElementById(`opt-${correctIdx}`);
+  if (correctBtn) {
+    correctBtn.classList.add("correct");
+  }
+}
+
+function nextQuestion() {
+  if (currentIndex < quizData.length - 1) {
+    currentIndex++;
+    renderQuestion();
+  }
+}
+
+function prevQuestion() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    renderQuestion();
+  }
+}
+
+// دعم لوحة المفاتيح والتحكم للتلفاز
+window.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowLeft") nextQuestion();
+  if (e.key === "ArrowRight") prevQuestion();
+  if (e.key === " " || e.key === "Enter") revealAnswer();
+});
+
+renderQuestion();
+</script>
+</body>
+</html>
